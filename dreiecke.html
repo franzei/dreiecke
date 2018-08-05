@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<script src="jquery-3.3.1.min.js"></script>
+	<script>
+
+var Dreieck = function( p1x, p1y, p2x, p2y, p3x, p3y ) {
+  this.p1x = p1x;
+  this.p1y = p1y;
+  this.p2x = p2x;
+  this.p2y = p2y;
+  this.p3x = p3x;
+  this.p3y = p3y;
+
+  this.seite1 = function() {
+    return Math.sqrt(Math.pow(this.p2x-this.p1x,2)+Math.pow(this.p2y-this.p1y,2));
+  }
+
+  this.seite2 = function() {
+    return Math.sqrt(Math.pow(this.p3x-this.p1x,2)+Math.pow(this.p3y-this.p1y,2));
+  }
+
+  this.seite3 = function() {
+    return Math.sqrt(Math.pow(this.p3x-this.p2x,2)+Math.pow(this.p3y-this.p2y,2));
+  }
+
+	this.umfang = function() {
+    return this.seite1() + this.seite2() + this.seite3();
+	}
+
+	this.fläche = function() {
+
+    var gamma;
+    var sp;
+    sp = (this.p1x -this.p3x)*(this.p2x - this.p3x) + (this.p1y -this.p3y)*(this.p2y - this.p3y);
+    gamma = Math.acos(sp/(this.seite2()*this.seite3()));
+
+    return 0.5 * this.seite2() * this.seite3() * Math.sin(gamma);
+  }
+}
+
+var mD = new Dreieck(0,0,1,0,1,1);
+
+console.log( mD.seite1());
+console.log( mD.seite2());
+console.log( mD.seite3());
+console.log( mD.umfang());
+console.log( mD.fläche());
+
+Dreieck.prototype.build = function() {
+	return  $( '<canvas>' )
+	            .attr({width:500,height:500})
+							.get(0)
+							.getContext('2d')
+				//			.appendTo('#ausgabe');
+						};
+/*Dreieck.prototype.draw = function(  ) { // zeichnet Inhalt im Canvas
+	ctx.clearRect(0,0,500,500);
+	ctx.beginPath();
+	ctx.moveTo( this.p1x, this.p1y );
+	ctx.lineTo( this.p2x, this.p2y);
+	ctx.lineTo( this.p3x, this.p3y);
+	ctx.lineTo( this.p1x,this.p1y);
+	ctx.stroke();
+}*/
+$( document ).ready( function() {
+	var dD = new Dreieck(2,1,4,3,0,3);
+	console.log( dD.seite1());
+	console.log( dD.seite2());
+	console.log( dD.seite3());
+	console.log( dD.umfang());
+	console.log( dD.fläche());
+//	$(dD.build).appendTo('#ausgabe');
+	dD.build();
+//	dD.draw();
+
+});
+
+	</script>
+	<style>
+	</style>
+</head>
+<body>
+	<div id="ausgabe"></div>
+</body>
+</html>
